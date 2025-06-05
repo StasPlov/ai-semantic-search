@@ -1,4 +1,4 @@
-# AI Product Search
+# AI Semantic Search
 
 Мини-сервис для умного поиска товаров по смыслу на Python + FastAPI + MySQL + sentence-transformers.
 
