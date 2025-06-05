@@ -1,6 +1,6 @@
 # AI Semantic Search
 
-Мини-сервис для умного поиска товаров по смыслу на Python + FastAPI + MySQL + sentence-transformers.
+Мини-сервис для поиска c ИИ по смыслу на Python + FastAPI + MySQL + sentence-transformers.
 
 ## Динамические SQL-запросы, маппинг и ИИ-поиск
 
