@@ -22,3 +22,6 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     # Все параметры теперь берутся из .env файла 
+    volumes:
+      - ./queries:/app/queries
+      - ./mappings:/app/mappings 
