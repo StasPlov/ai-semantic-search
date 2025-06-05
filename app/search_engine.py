@@ -1,4 +1,6 @@
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import SentenceTransformer
+import numpy as np
+import faiss
 
 class ProductSearchEngine:
     def __init__(self, products):
@@ -8,13 +10,19 @@ class ProductSearchEngine:
         self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
         # Для каждого товара объединяем название и описание в одну строку
         self.product_texts = [f"{p['title']} {p['description'] or ''}" for p in products]
-        # Преобразуем все тексты товаров в векторы (эмбеддинги) — это и есть "понимание смысла" товара
-        self.embeddings = self.model.encode(self.product_texts, convert_to_tensor=True)
+        # Получаем эмбеддинги как numpy массив (float32)
+        self.embeddings = self.model.encode(self.product_texts, convert_to_numpy=True, normalize_embeddings=True)
+        if len(self.embeddings) > 0:
+            dim = self.embeddings.shape[1]
+            self.index = faiss.IndexFlatIP(dim)
+            self.index.add(self.embeddings)
+        else:
+            self.index = None
 
     def search(self, query, top_k=10):
-        # Преобразуем поисковый запрос пользователя в вектор (эмбеддинг)
-        query_emb = self.model.encode(query, convert_to_tensor=True)
-        # Сравниваем вектор запроса с векторами всех товаров и находим наиболее близкие по смыслу (top_k)
-        hits = util.semantic_search(query_emb, self.embeddings, top_k=top_k)[0]
-        # Возвращаем товары, которые ближе всего по смыслу к запросу
-        return [self.products[hit['corpus_id']] for hit in hits] 
+        if self.index is None or len(self.products) == 0:
+            return []
+        query_emb = self.model.encode([query], convert_to_numpy=True, normalize_embeddings=True)
+        D, I = self.index.search(query_emb, min(top_k, len(self.products)))
+        # I - индексы наиболее похожих товаров
+        return [self.products[i] for i in I[0] if i >= 0] 
