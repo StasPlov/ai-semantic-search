@@ -201,3 +201,12 @@ docker-compose up --build
 ```
 
 3. Сервис будет доступен на http://localhost:8000
+
+## 💖 Support
+
+Thank you so much for using my projects! If you have any questions, you can always ask me here:
+
+If you want to thank me with a coin
+TON: `UQD-ZbaI-tHINZqu1Mg7GgFSCMm857jlvXJXLxSa1zx0JKGH`
+
+[![Telegram Badge](https://img.shields.io/badge/Telegram-blue?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/StasPlov)
