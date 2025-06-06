@@ -197,7 +197,7 @@ uvicorn main:app --reload
 2. Соберите и запустите сервис:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 3. Сервис будет доступен на http://localhost:8000
