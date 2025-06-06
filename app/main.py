@@ -28,15 +28,11 @@ class ProductSearchEngineDynamic(ProductSearchEngine):
     def __init__(self, products, fields=None):
         self.products = products
         self.fields = fields or []
-        # Формируем тексты для эмбеддингов по всем полям, кроме id
         product_texts = [
             " ".join(str(p.get(f, "")) for f in self.fields if f != "id" and p.get(f) is not None)
             for p in products
         ]
-        # Вызываем базовый конструктор с универсальными текстами
-        super().__init__([
-            dict(p, title=text, description="") for p, text in zip(products, product_texts)
-        ])
+        super().__init__(products, product_texts)
 
 for fname in os.listdir(QUERIES_DIR):
     if fname.endswith('.sql'):
